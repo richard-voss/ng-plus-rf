@@ -72,4 +72,16 @@ describe('FxFormComponent', () => {
     enterName('');
     expect(component.form.valid).toBeFalsy();
   });
+
+  it('cannot submit if invalid', () => {
+    const button = fixture.debugElement.query(By.css('button[type="submit"]'));
+
+    enterName('valid');
+    fixture.detectChanges();
+    expect((button.nativeElement as HTMLButtonElement).disabled).toBeFalsy();
+
+    enterName('SO!INVALID!');
+    fixture.detectChanges();
+    expect((button.nativeElement as HTMLButtonElement).disabled).toBeTruthy();
+  });
 });
