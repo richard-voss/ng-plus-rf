@@ -14,8 +14,8 @@
     </mat-select>
   </mat-form-field>
 
-  <rf-fx-linear-form *ngIf="type == 'linear'" [form]="form"></rf-fx-linear-form>
-  <rf-fx-exponential-form *ngIf="type == 'exponential'" [form]="form"></rf-fx-exponential-form>
+  <rf-fx-linear-form [form]="form"></rf-fx-linear-form>
+  <rf-fx-exponential-form [form]="form"></rf-fx-exponential-form>
 
   <div class="tools">
     <mat-icon *ngIf="form.pristine">star_border</mat-icon>

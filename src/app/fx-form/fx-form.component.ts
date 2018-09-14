@@ -19,14 +19,33 @@ export function numeric(c: AbstractControl): ValidationErrors | null {
   }
 }
 
-class MathFunction {
+abstract class MathFunction {
   constructor(
-    readonly name: string,
-    readonly slope: number,
-    readonly constant: number) {}
+    readonly name: string) {}
 
-  compute(x) {
+  abstract compute(x: number): number;
+}
+
+class LinearFunction extends MathFunction {
+  constructor(name: string,
+    readonly slope: number,
+    readonly constant: number) {
+    super(name);
+  }
+
+  compute(x: number): number {
     return this.constant + this.slope * x;
+  }
+}
+
+class ExponentialFunction extends MathFunction {
+
+  constructor(name: string, readonly base: number) {
+    super(name);
+  }
+
+  compute(x: number): number {
+    return Math.pow(this.base, x);
   }
 }
 
@@ -60,8 +79,22 @@ export class FxFormComponent implements OnInit {
       slope: new FormControl('1', [Validators.required, numeric]),
 
       base: new FormControl('1', [Validators.required, numeric])
-    })
-    ;
+    });
+
+    this.form.get('type').valueChanges.subscribe(type => this.typeChanged(type));
+    this.typeChanged('linear');
+  }
+
+  private typeChanged(type) {
+    if (type === 'linear') {
+      this.form.get('constant').enable();
+      this.form.get('slope').enable();
+      this.form.get('base').disable();
+    } else {
+      this.form.get('constant').disable();
+      this.form.get('slope').disable();
+      this.form.get('base').enable();
+    }
   }
 
   get type() {
@@ -84,9 +117,10 @@ export class FxFormComponent implements OnInit {
   }
 
   createFunction() {
-    this.func = new MathFunction(this.form.value.name,
-      parseInt(this.form.value.slope, 10),
-      parseInt(this.form.value.constant, 10)
-    );
+    this.func = this.type === 'linear' ?
+      new LinearFunction(this.form.value.name,
+        parseInt(this.form.value.slope, 10),
+        parseInt(this.form.value.constant, 10)
+      ) : new ExponentialFunction(this.form.value.name, parseInt(this.form.value.base, 10));
   }
 }

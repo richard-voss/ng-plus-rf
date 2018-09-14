@@ -85,8 +85,7 @@ describe('FxFormComponent', () => {
       description: null,
       type: 'linear',
       slope: '1',
-      constant: '0',
-      base: '1'
+      constant: '0'
     });
   });
 
@@ -164,10 +163,24 @@ describe('FxFormComponent', () => {
     ).toContain('f(1) = 100');
   });
 
-  it('can select exponential function and linear inputs go away, exponential inputs come in', () => {
+  it('can select exponential function and linear inputs become disabled', () => {
     component.form.get('type').setValue('exponential');
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('rf-fx-linear-form'))).toBeFalsy();
-    expect(fixture.debugElement.query(By.css('rf-fx-exponential-form'))).toBeTruthy();
+    expect(component.form.get('constant').disabled).toBeTruthy();
+    expect(component.form.get('slope').disabled).toBeTruthy();
+  });
+
+  it('can compute exponential functions', () => {
+    enterName('g');
+    component.form.get('type').setValue('exponential');
+    component.form.get('base').setValue('3');
+
+    expect(component.form.valid).toBeTruthy();
+    fixture.detectChanges();
+    fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement.click();
+    fixture.detectChanges();
+    expect(
+      fixture.debugElement.query(By.css('.result')).nativeElement.textContent
+    ).toContain('g(1) = 3');
   });
 });
