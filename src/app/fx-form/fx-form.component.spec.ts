@@ -5,15 +5,24 @@ import { MatButtonModule, MatIconModule, MatInputModule } from '@angular/materia
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ComplexityCheckerService } from '../complexity-checker.service';
+import { anything, instance, mock, when } from 'ts-mockito';
+import { of, Subject } from 'rxjs';
 
 describe('FxFormComponent', () => {
   let component: FxFormComponent;
   let fixture: ComponentFixture<FxFormComponent>;
 
+  let check: ComplexityCheckerService;
+
   beforeEach(async(() => {
+    check = mock(ComplexityCheckerService);
+    when(check.checkComplexityOkay(anything())).thenReturn(of(true));
+
     TestBed.configureTestingModule({
       declarations: [FxFormComponent],
-      imports: [MatInputModule, BrowserAnimationsModule, ReactiveFormsModule, MatIconModule, MatButtonModule]
+      imports: [MatInputModule, BrowserAnimationsModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
+      providers: [{ provide: ComplexityCheckerService, useValue: instance(check) }]
     })
       .compileComponents();
   }));
@@ -96,5 +105,37 @@ describe('FxFormComponent', () => {
 
     const descr = findTextarea();
     expect(descr.nativeElement.value).toEqual('a cool function');
+  });
+
+  function enterDescription(text: string) {
+    const ta = findTextarea();
+    const textarea = ta.nativeElement as HTMLTextAreaElement;
+    textarea.value = text;
+    textarea.dispatchEvent(new Event('input'));
+  }
+
+  it('validates the description synchronously', () => {
+    enterName('foo');
+
+    when(check.checkComplexityOkay('example')).thenReturn(of(false));
+
+    enterDescription('example');
+    expect(component.form.valid).toBeFalsy();
+  });
+
+  it('validates the description asynchronously', () => {
+    enterName('foo');
+
+    const checkResult = new Subject<boolean>();
+    when(check.checkComplexityOkay('example')).thenReturn(checkResult);
+
+    enterDescription('example');
+    expect(component.form.valid).toBeFalsy();
+    expect(component.form.invalid).toBeFalsy();
+    expect(component.form.pending).toBeTruthy();
+
+    checkResult.next(false);
+
+    expect(component.form.valid).toBeFalsy();
   });
 });
