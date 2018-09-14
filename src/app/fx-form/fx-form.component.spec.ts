@@ -163,7 +163,7 @@ describe('FxFormComponent', () => {
     ).toContain('f(1) = 100');
   });
 
-  it('can select exponential function and linear inputs become disabled', () => {
+  xit('can select exponential function and linear inputs become disabled', () => {
     component.form.get('type').setValue('exponential');
     fixture.detectChanges();
     expect(component.form.get('constant').disabled).toBeTruthy();
