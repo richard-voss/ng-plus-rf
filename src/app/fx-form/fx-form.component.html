@@ -8,6 +8,9 @@
   </mat-form-field>
 
   <div class="tools">
+    <mat-icon *ngIf="form.pristine">star_border</mat-icon>
+    <mat-icon *ngIf="form.dirty">star_half</mat-icon>
+
     <mat-icon *ngIf="form.valid" color="primary">check</mat-icon>
     <mat-icon *ngIf="form.invalid" color="warn">error</mat-icon>
 
