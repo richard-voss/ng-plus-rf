@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FxFormComponent } from './fx-form.component';
-import { MatButtonModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -23,7 +23,9 @@ describe('FxFormComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [FxFormComponent, MockComponent(FxLinearFormComponent)],
-      imports: [MatInputModule, BrowserAnimationsModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
+      imports: [
+        MatInputModule, BrowserAnimationsModule, ReactiveFormsModule, MatIconModule, MatButtonModule, MatSelectModule
+      ],
       providers: [{ provide: ComplexityCheckerService, useValue: instance(check) }]
     })
       .compileComponents();
@@ -82,6 +84,7 @@ describe('FxFormComponent', () => {
     expect(component.form.value).toEqual({
       name: 'My Function',
       description: null,
+      type: 'linear',
       slope: '1',
       constant: '0'
     });

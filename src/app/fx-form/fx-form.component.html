@@ -7,6 +7,15 @@
     <textarea matInput placeholder="Description" formControlName="description"></textarea>
   </mat-form-field>
 
+  <mat-form-field>
+    <mat-select placeholder="Type" formControlName="type">
+      <mat-option value="linear">
+        Linear
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
   <rf-fx-linear-form [form]="form"></rf-fx-linear-form>
 
   <div class="tools">

@@ -54,6 +54,7 @@ export class FxFormComponent implements OnInit {
           map(okay => okay ? null : { too_complex: true })
         ) : of(null)
       }),
+      type: new FormControl('linear'),
       constant: new FormControl('0', [Validators.required, numeric]),
       slope: new FormControl('1', [Validators.required, numeric]),
     })
@@ -68,6 +69,7 @@ export class FxFormComponent implements OnInit {
     this.form.setValue({
       name: 'foo',
       description: 'an example function',
+      type: 'linear',
       slope: '23',
       constant: '5'
     });
