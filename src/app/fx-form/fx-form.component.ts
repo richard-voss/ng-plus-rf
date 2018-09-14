@@ -55,8 +55,11 @@ export class FxFormComponent implements OnInit {
         ) : of(null)
       }),
       type: new FormControl('linear'),
+
       constant: new FormControl('0', [Validators.required, numeric]),
       slope: new FormControl('1', [Validators.required, numeric]),
+
+      base: new FormControl('1', [Validators.required, numeric])
     })
     ;
   }
@@ -75,7 +78,8 @@ export class FxFormComponent implements OnInit {
       description: 'an example function',
       type: 'linear',
       slope: '23',
-      constant: '5'
+      constant: '5',
+      base: '1'
     });
   }
 

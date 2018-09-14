@@ -10,6 +10,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 import { of, Subject } from 'rxjs';
 import { MockComponent } from 'ng-mocks';
 import { FxLinearFormComponent } from '../fx-linear-form/fx-linear-form.component';
+import { FxExponentialFormComponent } from '../fx-exponential-form/fx-exponential-form.component';
 
 describe('FxFormComponent', () => {
   let component: FxFormComponent;
@@ -22,7 +23,7 @@ describe('FxFormComponent', () => {
     when(check.checkComplexityOkay(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
-      declarations: [FxFormComponent, MockComponent(FxLinearFormComponent)],
+      declarations: [FxFormComponent, MockComponent(FxLinearFormComponent), MockComponent(FxExponentialFormComponent)],
       imports: [
         BrowserAnimationsModule, ReactiveFormsModule,
         MatInputModule, MatIconModule, MatButtonModule,
@@ -84,7 +85,8 @@ describe('FxFormComponent', () => {
       description: null,
       type: 'linear',
       slope: '1',
-      constant: '0'
+      constant: '0',
+      base: '1'
     });
   });
 
@@ -162,9 +164,10 @@ describe('FxFormComponent', () => {
     ).toContain('f(1) = 100');
   });
 
-  it('can select exponential function and linear inputs go away', () => {
+  it('can select exponential function and linear inputs go away, exponential inputs come in', () => {
     component.form.get('type').setValue('exponential');
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('rf-fx-linear-form'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('rf-fx-exponential-form'))).toBeTruthy();
   });
 });
