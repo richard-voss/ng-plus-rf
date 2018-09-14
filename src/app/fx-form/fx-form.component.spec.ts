@@ -53,12 +53,25 @@ describe('FxFormComponent', () => {
     expect(textarea.nativeElement.value).toEqual('');
   });
 
-  function enterName(name) {
-    const input = findInputName();
-
-    const htmlInput = (input.nativeElement as HTMLInputElement);
+  function enterValue(htmlInput, name) {
     htmlInput.value = name;
     htmlInput.dispatchEvent(new Event('input'));
+  }
+
+  function enterName(name) {
+    enterValue(findInputName().nativeElement as HTMLInputElement, name);
+  }
+
+  function enterDescription(text: string) {
+    enterValue(findTextarea().nativeElement as HTMLTextAreaElement, text);
+  }
+
+  function findSlope() {
+    return fixture.debugElement.query(By.css('input[placeholder="Slope"]'));
+  }
+
+  function enterSlope(slope: string) {
+    enterValue(findSlope().nativeElement, slope);
   }
 
   it('accepts user input', () => {
@@ -66,7 +79,8 @@ describe('FxFormComponent', () => {
 
     expect(component.form.value).toEqual({
       name: 'My Function',
-      description: null
+      description: null,
+      slope: null
     });
   });
 
@@ -95,24 +109,14 @@ describe('FxFormComponent', () => {
   });
 
   it('automatically fills the form from data', () => {
-    component.form.setValue({
-      name: 'f',
-      description: 'a cool function'
-    });
+    component.example();
 
     const inputName = findInputName();
-    expect(inputName.nativeElement.value).toEqual('f');
+    expect(inputName.nativeElement.value).toEqual('foo');
 
     const descr = findTextarea();
-    expect(descr.nativeElement.value).toEqual('a cool function');
+    expect(descr.nativeElement.value).toEqual('an example function');
   });
-
-  function enterDescription(text: string) {
-    const ta = findTextarea();
-    const textarea = ta.nativeElement as HTMLTextAreaElement;
-    textarea.value = text;
-    textarea.dispatchEvent(new Event('input'));
-  }
 
   it('validates the description synchronously', () => {
     enterName('foo');
@@ -137,5 +141,35 @@ describe('FxFormComponent', () => {
     checkResult.next(false);
 
     expect(component.form.valid).toBeFalsy();
+  });
+
+  it('can compute f(1)', () => {
+    enterName('f');
+    enterSlope('100');
+
+    expect(component.form.valid).toBeTruthy();
+    fixture.detectChanges();
+    fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement.click();
+
+    fixture.detectChanges();
+
+    expect(
+      fixture.debugElement.query(By.css('.result')).nativeElement.textContent
+    ).toContain('f(1) = 100');
+  });
+
+  it('can compute g(1)', () => {
+    enterName('g');
+    enterSlope('');
+
+    expect(component.form.valid).toBeTruthy();
+    fixture.detectChanges();
+    fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement.click();
+
+    fixture.detectChanges();
+
+    expect(
+      fixture.debugElement.query(By.css('.result')).nativeElement.textContent
+    ).toContain('g(1) = 1');
   });
 });
