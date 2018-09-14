@@ -84,4 +84,17 @@ describe('FxFormComponent', () => {
     fixture.detectChanges();
     expect((button.nativeElement as HTMLButtonElement).disabled).toBeTruthy();
   });
+
+  it('automatically fills the form from data', () => {
+    component.form.setValue({
+      name: 'f',
+      description: 'a cool function'
+    });
+
+    const inputName = findInputName();
+    expect(inputName.nativeElement.value).toEqual('f');
+
+    const descr = findTextarea();
+    expect(descr.nativeElement.value).toEqual('a cool function');
+  });
 });

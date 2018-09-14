@@ -23,4 +23,11 @@ export class FxFormComponent implements OnInit {
   debug() {
     console.log(this.form.value);
   }
+
+  example() {
+    this.form.setValue({
+      name: 'foo',
+      description: 'an example function'
+    });
+  }
 }
