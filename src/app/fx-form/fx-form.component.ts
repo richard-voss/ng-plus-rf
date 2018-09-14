@@ -73,7 +73,12 @@ export class FxFormComponent implements OnInit {
           map(okay => okay ? null : { too_complex: true })
         ) : of(null)
       }),
-      type: new FormControl('linear')
+      type: new FormControl('linear'),
+
+      constant: new FormControl('0', [Validators.required, numeric]),
+      slope: new FormControl('1', [Validators.required, numeric]),
+
+      base: new FormControl('1', [Validators.required, numeric])
     });
 
     this.form.get('type').valueChanges.subscribe(type => this.typeChanged(type));
@@ -81,16 +86,14 @@ export class FxFormComponent implements OnInit {
   }
 
   private typeChanged(type) {
-
-
     if (type === 'linear') {
-      this.form.addControl('constant', new FormControl('0', [Validators.required, numeric]));
-      this.form.addControl('slope', new FormControl('1', [Validators.required, numeric]));
-      this.form.removeControl('base');
+      this.form.get('constant').enable();
+      this.form.get('slope').enable();
+      this.form.get('base').disable();
     } else {
-      this.form.removeControl('constant');
-      this.form.removeControl('slope');
-      this.form.addControl('base', new FormControl('1', [Validators.required, numeric]));
+      this.form.get('constant').disable();
+      this.form.get('slope').disable();
+      this.form.get('base').enable();
     }
   }
 
@@ -108,7 +111,8 @@ export class FxFormComponent implements OnInit {
       description: 'an example function',
       type: 'linear',
       slope: '23',
-      constant: '5'
+      constant: '5',
+      base: '1'
     });
   }
 
