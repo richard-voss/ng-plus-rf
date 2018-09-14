@@ -9,21 +9,19 @@
 
   <mat-form-field>
     <mat-select placeholder="Type" formControlName="type">
-      <mat-option value="linear">
-        Linear
-      </mat-option>
+      <mat-option value="linear">Linear</mat-option>
+      <mat-option value="exponential">Exponential</mat-option>
     </mat-select>
   </mat-form-field>
 
-
-  <rf-fx-linear-form [form]="form"></rf-fx-linear-form>
+  <rf-fx-linear-form *ngIf="type == 'linear'" [form]="form"></rf-fx-linear-form>
 
   <div class="tools">
     <mat-icon *ngIf="form.pristine">star_border</mat-icon>
     <mat-icon *ngIf="form.dirty">star_half</mat-icon>
 
     <mat-icon *ngIf="form.valid" color="primary">check</mat-icon>
-    <mat-icon *ngIf="form.pending" color="accent">timelapse</mat-icon>
+    <mat-spinner *ngIf="form.pending" color="accent" [diameter]="24"></mat-spinner>
     <mat-icon *ngIf="form.invalid" color="warn">error</mat-icon>
 
     <button type="button" mat-raised-button (click)="example()">Example</button>

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FxFormComponent } from './fx-form.component';
-import { MatButtonModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatInputModule, MatProgressSpinnerModule, MatSelectModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -24,7 +24,9 @@ describe('FxFormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FxFormComponent, MockComponent(FxLinearFormComponent)],
       imports: [
-        MatInputModule, BrowserAnimationsModule, ReactiveFormsModule, MatIconModule, MatButtonModule, MatSelectModule
+        BrowserAnimationsModule, ReactiveFormsModule,
+        MatInputModule, MatIconModule, MatButtonModule,
+        MatSelectModule, MatProgressSpinnerModule
       ],
       providers: [{ provide: ComplexityCheckerService, useValue: instance(check) }]
     })
@@ -68,10 +70,6 @@ describe('FxFormComponent', () => {
 
   function enterDescription(text: string) {
     enterValue(findTextarea().nativeElement as HTMLTextAreaElement, text);
-  }
-
-  function findSlope() {
-    return fixture.debugElement.query(By.css('input[placeholder="Slope"]'));
   }
 
   function enterSlope(slope: string) {
@@ -162,5 +160,11 @@ describe('FxFormComponent', () => {
     expect(
       fixture.debugElement.query(By.css('.result')).nativeElement.textContent
     ).toContain('f(1) = 100');
+  });
+
+  it('can select exponential function and linear inputs go away', () => {
+    component.form.get('type').setValue('exponential');
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('rf-fx-linear-form'))).toBeFalsy();
   });
 });

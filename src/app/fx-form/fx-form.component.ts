@@ -61,6 +61,10 @@ export class FxFormComponent implements OnInit {
     ;
   }
 
+  get type() {
+    return this.form.get('type').value;
+  }
+
   debug() {
     console.log(this.form.value);
   }
