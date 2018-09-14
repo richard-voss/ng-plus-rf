@@ -1,5 +1,16 @@
-:host {
+form {
   display:flex;
   flex-flow: column nowrap;
   align-items: stretch;
+}
+
+.tools {
+  display:flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+
+  button {
+    margin:0 0.5rem;
+  }
 }

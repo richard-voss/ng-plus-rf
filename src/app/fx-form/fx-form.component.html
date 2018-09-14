@@ -1,4 +1,4 @@
-<ng-container [formGroup]="form">
+<form [formGroup]="form">
   <mat-form-field>
     <input matInput placeholder="Name" formControlName="name">
   </mat-form-field>
@@ -8,10 +8,12 @@
   </mat-form-field>
 
   <div class="tools">
-    <mat-icon *ngIf="form.valid" color="primary" [inline]="true">check</mat-icon>
-    <mat-icon *ngIf="form.invalid" color="warn" [inline]="true">error</mat-icon>
-    <button mat-raised-button color="accent" (click)="debug()">Debug!</button>
+    <mat-icon *ngIf="form.valid" color="primary">check</mat-icon>
+    <mat-icon *ngIf="form.invalid" color="warn">error</mat-icon>
+
+    <button type="button" mat-raised-button color="accent" (click)="debug()">Debug!</button>
+    <button type="submit" mat-raised-button color="primary">OK</button>
   </div>
-</ng-container>
+</form>
 
 
