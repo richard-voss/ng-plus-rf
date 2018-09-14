@@ -8,6 +8,8 @@ import { By } from '@angular/platform-browser';
 import { ComplexityCheckerService } from '../complexity-checker.service';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { of, Subject } from 'rxjs';
+import { MockComponent } from 'ng-mocks';
+import { FxLinearFormComponent } from '../fx-linear-form/fx-linear-form.component';
 
 describe('FxFormComponent', () => {
   let component: FxFormComponent;
@@ -20,7 +22,7 @@ describe('FxFormComponent', () => {
     when(check.checkComplexityOkay(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
-      declarations: [FxFormComponent],
+      declarations: [FxFormComponent, MockComponent(FxLinearFormComponent)],
       imports: [MatInputModule, BrowserAnimationsModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
       providers: [{ provide: ComplexityCheckerService, useValue: instance(check) }]
     })
@@ -71,7 +73,7 @@ describe('FxFormComponent', () => {
   }
 
   function enterSlope(slope: string) {
-    enterValue(findSlope().nativeElement, slope);
+    component.form.get(['slope']).setValue(slope);
   }
 
   it('accepts user input', () => {

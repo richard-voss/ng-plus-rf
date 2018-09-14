@@ -7,15 +7,7 @@
     <textarea matInput placeholder="Description" formControlName="description"></textarea>
   </mat-form-field>
 
-  <div class="linear">
-    <mat-form-field>
-      <input matInput placeholder="Constant" formControlName="constant">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Slope" formControlName="slope">
-    </mat-form-field>
-  </div>
+  <rf-fx-linear-form [form]="form"></rf-fx-linear-form>
 
   <div class="tools">
     <mat-icon *ngIf="form.pristine">star_border</mat-icon>

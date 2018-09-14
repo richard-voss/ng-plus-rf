@@ -6,11 +6,13 @@ import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatI
 import { FxFormComponent } from './fx-form/fx-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FxLinearFormComponent } from './fx-linear-form/fx-linear-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FxFormComponent
+    FxFormComponent,
+    FxLinearFormComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, ReactiveFormsModule,
