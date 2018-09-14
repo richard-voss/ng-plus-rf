@@ -22,10 +22,11 @@ export function numeric(c: AbstractControl): ValidationErrors | null {
 class MathFunction {
   constructor(
     readonly name: string,
-    readonly slope: number) {}
+    readonly slope: number,
+    readonly constant: number) {}
 
   compute(x) {
-    return this.slope * x;
+    return this.constant + this.slope * x;
   }
 }
 
@@ -53,7 +54,8 @@ export class FxFormComponent implements OnInit {
           map(okay => okay ? null : { too_complex: true })
         ) : of(null)
       }),
-      slope: new FormControl(null, numeric)
+      constant: new FormControl('0', [Validators.required, numeric]),
+      slope: new FormControl('1', [Validators.required, numeric]),
     })
     ;
   }
@@ -66,13 +68,15 @@ export class FxFormComponent implements OnInit {
     this.form.setValue({
       name: 'foo',
       description: 'an example function',
-      slope: '23'
+      slope: '23',
+      constant: '5'
     });
   }
 
   createFunction() {
     this.func = new MathFunction(this.form.value.name,
-      this.form.value.slope ?
-        parseInt(this.form.value.slope, 10) : 1);
+      parseInt(this.form.value.slope, 10),
+      parseInt(this.form.value.constant, 10)
+    );
   }
 }

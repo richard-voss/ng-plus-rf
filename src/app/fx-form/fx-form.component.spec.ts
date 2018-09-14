@@ -80,7 +80,8 @@ describe('FxFormComponent', () => {
     expect(component.form.value).toEqual({
       name: 'My Function',
       description: null,
-      slope: null
+      slope: '1',
+      constant: '0'
     });
   });
 
@@ -156,20 +157,5 @@ describe('FxFormComponent', () => {
     expect(
       fixture.debugElement.query(By.css('.result')).nativeElement.textContent
     ).toContain('f(1) = 100');
-  });
-
-  it('can compute g(1)', () => {
-    enterName('g');
-    enterSlope('');
-
-    expect(component.form.valid).toBeTruthy();
-    fixture.detectChanges();
-    fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement.click();
-
-    fixture.detectChanges();
-
-    expect(
-      fixture.debugElement.query(By.css('.result')).nativeElement.textContent
-    ).toContain('g(1) = 1');
   });
 });
